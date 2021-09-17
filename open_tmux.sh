@@ -1,6 +1,7 @@
 #/bin/bash
 
 session=$1
+account=$2
 
 tmux kill-window -t $session 2>/dev/null
 
@@ -18,9 +19,7 @@ echo ${url:47:609} | base64 -w 0 > $session.url
 
 link=$(cat $session.url)
 
-echo $link
-
-url='http://51.81.101.99/session.php?session='$session'&account='$session'&status=1&url='$link
+url='http://51.81.101.99/session.php?session='$session'&account='$account'&status=1&url='$link
 curl $url
 
-#rm -rf $session.url
+rm -rf $session.url
