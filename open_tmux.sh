@@ -34,7 +34,7 @@ then
 
    link=$(cat $session.url)
 
-   url=$ip'/session.php?session='$session'&account='$account'&status=1&url='$link
+   url=$ip'/session.php?session='$session'&account='$account'&user='$user'&status=1&url='$link
    curl $url
 
    rm -rf $session.url
