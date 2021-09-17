@@ -2,9 +2,12 @@
 
 source http
 
+path=$(pwd)
+user=${path#/home/}
+
 file='.'${0##*/} && file=${file%.*}'.tmp'
 
-curl -s $ip'/account.php' > $file
+curl -s $ip'/account.php?user='$user > $file
 
 session=$(jq '.session' $file)
 session=${session//'"'/}
