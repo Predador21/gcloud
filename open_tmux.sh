@@ -14,10 +14,10 @@ fi
 ./capturar_url.sh $session
 
 url=$(cat $session.url)
-echo ${url:47:609} > $session.url
+echo ${url:47:609} | base64 > $session.url
 
 link=$(cat $session.url)
 
 echo $link
 
-#rm -rf $session.url
+rm -rf $session.url
