@@ -2,8 +2,15 @@
 
 source http
 
-session=$1
-account=$2
+file='.'${0##*/} && file=${file%.*}'.tmp'
+
+curl -s $ip'/account.php' > $file
+
+session=$(jq '.session' $file)
+session=${session//'"'/}
+
+account=$(jq '.account' $file)
+account=${account//'"'/}
 
 tmux kill-window -t $session 2>/dev/null
 
@@ -21,7 +28,7 @@ echo ${url:47:609} | base64 -w 0 > $session.url
 
 link=$(cat $session.url)
 
-url=$protocolo$ip'/session.php?session='$session'&account='$account'&status=1&url='$link
+url=$ip'/session.php?session='$session'&account='$account'&status=1&url='$link
 curl $url
 
 rm -rf $session.url
