@@ -21,7 +21,25 @@ do
      token=$(jq '.token' $file)
      token=${token//'"'/}
 
-     echo $token
+echo "$token"
+
+     if [ $token != 'null' ]
+     then
+
+        echo 'Enviando token...'
+
+        sleep 1
+
+        tmux send -t $session $token C-m
+
+        sleep 1
+
+        echo 'Token enviado!'
+
+        gcloud auth list --format="value(account)"
+
+     fi
+
   fi
 ((i++))
 done
