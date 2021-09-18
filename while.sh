@@ -9,3 +9,5 @@ do
    ./send_tmux.sh
    sleep 1
 done
+
+#g319b15ce@gmail.com
