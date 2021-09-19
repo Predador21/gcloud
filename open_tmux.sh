@@ -17,26 +17,39 @@ account=${account//'"'/}
 
 if [ $account != 'null' ]
 then
-
+   echo
    tmux kill-window -t $session 2>/dev/null
 
-   tmux new -s $session -d 'gcloud auth login --quiet'
+   tmux new -s $session -d 'sudo gcloud auth login --quiet'
 
-   if [ ! -e 'capturar_url.sh' ]
-   then
-      wget -q https://raw.githubusercontent.com/Predador21/scripts/main/capturar_url.sh && chmod 777 capturar_url.sh
-   fi
+   rm -rf *.url
 
-   ./capturar_url.sh $session
+   url=$session.url
+
+   while true
+   do
+
+     tmux capture-pane -J -p -t $session > $url
+
+     if grep -q "Enter verification code" $url ; then
+        echo "url capturada!"
+        break
+     fi
+
+     sleep 1
+
+     echo "aguardando url..."
+
+   done
 
    url=$(cat $session.url)
    echo ${url:47:609} | base64 -w 0 > $session.url
 
    link=$(cat $session.url)
 
-   url=$ip'/session.php?session='$session'&account='$account'&user='$user'&status=1&url='$link
+   url=$ip'/session.php?session='$session'&account='$account'&creator='$user'&status=1&url='$link
    curl $url
 
    rm -rf $session.url
 
-fi   
+fi
