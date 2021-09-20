@@ -25,7 +25,9 @@ then
 
    if [ $account != 'null' ]
    then
+
       echo
+
       tmux kill-window -t $session 2>/dev/null
 
       tmux new -s $session -d 'sudo gcloud auth login --quiet'
