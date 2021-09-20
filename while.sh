@@ -7,7 +7,6 @@ while true
 do
    ./open_tmux.sh
    ./send_tmux.sh
+   ./kill_tmux.sh
    sleep 1
 done
-
-#g319b15ce@gmail.com
