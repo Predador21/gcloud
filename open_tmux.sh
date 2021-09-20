@@ -12,7 +12,7 @@ curl -s $ip'/bridge.php?user='$user > $file
 account=$(jq '.account' $file)
 account=${account//'"'/}
 
-if [ $user'@gmail.com' == $account ]
+if [ $account != 'null' ]
 then
 
    curl -s $ip'/account.php?user='$user > $file
