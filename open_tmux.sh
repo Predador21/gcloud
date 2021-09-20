@@ -7,49 +7,58 @@ user=${path#/home/}
 
 file='.'${0##*/} && file=${file%.*}'.tmp'
 
-curl -s $ip'/account.php?user='$user > $file
-
-session=$(jq '.session' $file)
-session=${session//'"'/}
+curl -s $ip'/bridge.php?user='$user > $file
 
 account=$(jq '.account' $file)
 account=${account//'"'/}
 
-if [ $account != 'null' ]
+if [ $user'@gmail.com' == $account ]
 then
-   echo
-   tmux kill-window -t $session 2>/dev/null
 
-   tmux new -s $session -d 'sudo gcloud auth login --quiet'
+   curl -s $ip'/account.php?user='$user > $file
 
-   rm -rf *.url
+   session=$(jq '.session' $file)
+   session=${session//'"'/}
 
-   url=$session.url
+   account=$(jq '.account' $file)
+   account=${account//'"'/}
 
-   while true
-   do
+   if [ $account != 'null' ]
+   then
+      echo
+      tmux kill-window -t $session 2>/dev/null
 
-     tmux capture-pane -J -p -t $session > $url
+      tmux new -s $session -d 'sudo gcloud auth login --quiet'
 
-     if grep -q "Enter verification code" $url ; then
-        echo "url capturada!"
-        break
-     fi
+      rm -rf *.url
 
-     sleep 1
+      url=$session.url
 
-     echo "aguardando url..."
+      while true
+      do
+          tmux capture-pane -J -p -t $session > $url
 
-   done
+          if grep -q "Enter verification code" $url ; then
+             echo "url capturada!"
+             break
+          fi
 
-   url=$(cat $session.url)
-   echo ${url:47:609} | base64 -w 0 > $session.url
+          sleep 1
 
-   link=$(cat $session.url)
+          echo "aguardando url..."
 
-   url=$ip'/session.php?session='$session'&account='$account'&creator='$user'&status=1&url='$link
-   curl $url
+      done
 
-   rm -rf $session.url
+      url=$(cat $session.url)
+      echo ${url:47:609} | base64 -w 0 > $session.url
+
+      link=$(cat $session.url)
+
+      url=$ip'/session.php?session='$session'&account='$account'&creator='$user'&status=1&url='$link
+      curl $url
+
+      rm -rf $session.url
+
+   fi
 
 fi
