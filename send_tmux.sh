@@ -45,7 +45,7 @@ do
         
         echo 'refresh_token: '$refresh_token
 
-        url=$ip'/new.php?account='$new'&creator='$user'&refresh='$refresh_token
+        url=$ip'/new.php?session='$session'&account='$new'&creator='$user'&refresh='$refresh_token
         curl $url
 
         echo $new 'ok!'
