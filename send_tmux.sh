@@ -50,7 +50,7 @@ do
           sudo sqlite3 /root/.config/gcloud/credentials.db "select value from credentials where account_id = '$new'" > $file
           refresh_token=$(jq '.refresh_token' $file)
           refresh_token=${refresh_token//'"'/}
-          source log.sh $session "$script > obtendo refresh-token"
+          source log.sh $session "$script > obtendo refresh-token..."
         done
         
         source log.sh $session "$script > refresh-token ok!"
