@@ -71,7 +71,9 @@ do
         curl $url && source log.sh $session "$script > post account.php"
 
      fi
-
+     
+     sleep 1
+ 
   fi
 ((i++))
 done
