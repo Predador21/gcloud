@@ -20,12 +20,10 @@ do
   if [[ $session =~ "fenix_" ]]
   then
 
-     curl -s $ip'/token.php?session='$session > $file && source log.sh $session "$script > post token.php"
+     curl -s $ip'/token.php?session='$session > $file 
 
      token=$(jq '.token' $file)
      token=${token//'"'/}
-     
-     source log.sh $session "$script > token $token"
 
      if [ $token != 'null' ]
      then
