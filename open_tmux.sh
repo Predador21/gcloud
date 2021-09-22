@@ -27,8 +27,7 @@ then
    if [ $account != 'null' ]
    then
 
-      log="$script account $account recuperada."
-      curl -s $ip'/log.php?session='$session'&log='$log
+      source log.sh $session "$script account $account recuperada."
 
       tmux kill-window -t $session 2>/dev/null
 
