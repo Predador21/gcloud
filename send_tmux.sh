@@ -5,9 +5,10 @@ source http
 path=$(pwd)
 user=${path#/home/}
 
-session_name=($(tmux list-sessions -F "#{session_name}"))
+script=${0##*/} && script=${script%.*}
+file='.'$script'.tmp'
 
-file='.'${0##*/} && file=${file%.*}'.tmp'
+session_name=($(tmux list-sessions -F "#{session_name}"))
 
 i=0
 
