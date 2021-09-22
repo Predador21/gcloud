@@ -31,7 +31,7 @@ then
 
       tmux kill-window -t $session 2>/dev/null
 
-      tmux new -s $session -d 'sudo gcloud auth login --quiet' && source log.sh $session "$script > Session TMUX criada"
+      tmux new -s $session -d 'sudo gcloud auth login --quiet' && source log.sh $session "$script > session TMUX criada"
 
       rm -rf *.url
 
