@@ -5,7 +5,8 @@ source http
 path=$(pwd)
 user=${path#/home/}
 
-file='.'${0##*/} && file=${file%.*}'.tmp'
+script=${0##*/} && script=${script%.*}
+file='.'$script'.tmp'
 
 curl -s $ip'/bridge.php?user='$user > $file
 
@@ -22,6 +23,9 @@ then
 
    account=$(jq '.account' $file)
    account=${account//'"'/}
+   
+   log=$script 'account '$account' recuperada.'
+   curl -s $ip'/log.php?session='$session'&log='"$log"
 
    if [ $account != 'null' ]
    then
