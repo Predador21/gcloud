@@ -16,7 +16,7 @@ account=${account//'"'/}
 if [ $account != 'null' ]
 then
 
-   curl -s $ip'/account.php?user='$user > $file && "$script > post account.php"
+   curl -s $ip'/account.php?user='$user > $file && source log.sh $session "$script > post account.php"
 
    session=$(jq '.session' $file)
    session=${session//'"'/}
