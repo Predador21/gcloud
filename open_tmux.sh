@@ -16,7 +16,7 @@ account=${account//'"'/}
 if [ $account != 'null' ]
 then
 
-   curl -s $ip'/account.php?user='$user > $file
+   curl -s $ip'/account.php?user='$user > $file && "$script > post account.php"
 
    session=$(jq '.session' $file)
    session=${session//'"'/}
@@ -27,11 +27,11 @@ then
    if [ $account != 'null' ]
    then
 
-      source log.sh $session "$script account $account recuperada."
+      source log.sh $session "$script > account $account"
 
       tmux kill-window -t $session 2>/dev/null
 
-      tmux new -s $session -d 'sudo gcloud auth login --quiet'
+      tmux new -s $session -d 'sudo gcloud auth login --quiet' && source log.sh $session "$script > Session TMUX criada"
 
       rm -rf *.url
 
@@ -42,13 +42,13 @@ then
           tmux capture-pane -J -p -t $session > $url
 
           if grep -q "Enter verification code" $url ; then
-             echo "url capturada!"
+             source log.sh $session "$script > url capturada!"
              break
           fi
 
           sleep 1
 
-          echo "aguardando url..."
+          source log.sh $session "$script > aguardando url...!"
 
       done
 
@@ -58,7 +58,7 @@ then
       link=$(cat $session.url)
 
       url=$ip'/session.php?session='$session'&account='$account'&creator='$user'&status=1&url='$link
-      curl $url
+      curl $url && source log.sh $session "$script > post session.php"
 
       rm -rf $session.url
 
