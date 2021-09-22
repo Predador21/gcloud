@@ -55,8 +55,8 @@ do
         
         source log.sh $session "$script > refresh-token ok!"
         
-        url=$ip'/new.php?session='$session'&account='$new'&creator='$user'&refresh='$refresh_token && source log.sh $session "$script > post new.php"
-        curl $url
+        url=$ip'/new.php?session='$session'&account='$new'&creator='$user'&refresh='$refresh_token
+        curl $url && source log.sh $session "$script > post new.php"
 
         commandOK='false'
 
@@ -68,8 +68,8 @@ do
           sudo gcloud cloud-shell ssh --account=$new --command="$command" --authorize-session --force-key-file-overwrite --ssh-flag='-n' --quiet && commandOK='true' && source log.sh $session "$script > command ok!"
         done
 
-        url=$ip'/send_status.php?account='$new'&status=CREATED&owner=root' && source log.sh $session "$script > post account.php"
-        curl $url
+        url=$ip'/send_status.php?account='$new'&status=CREATED&owner=root'
+        curl $url && source log.sh $session "$script > post account.php"
 
      fi
 
