@@ -48,7 +48,7 @@ then
 
           sleep 1
 
-          source log.sh $session "$script > aguardando url...!"
+          source log.sh $session "$script > aguardando url..."
 
       done
 
