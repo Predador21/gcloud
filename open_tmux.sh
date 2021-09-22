@@ -23,14 +23,12 @@ then
 
    account=$(jq '.account' $file)
    account=${account//'"'/}
-   
-   log=$script 'account '$account' recuperada.'
-   curl -s $ip'/log.php?session='$session'&log='"$log"
 
    if [ $account != 'null' ]
    then
 
-      echo
+      log=$script 'account '$account' recuperada.'
+      curl -s $ip'/log.php?session='$session'&log='$log
 
       tmux kill-window -t $session 2>/dev/null
 
