@@ -37,14 +37,16 @@ do
         sleep 1
 
         source log.sh $session "$script > Token enviado!"
-
-        new=$(sudo gcloud config get-value account)
+        
+        while [ -z $new ]
+        do
+          source log.sh $session "$script > while gcloud config get-value account..."
+          new=$(sudo gcloud config get-value account)
+        done 
         
         source log.sh $session "$script > nova conta $new"
         
-        refresh_token='null'
-        
-        while [ $refresh_token == 'null' ]
+        while [ -z $refresh_token ]
         do
           sudo sqlite3 /root/.config/gcloud/credentials.db "select value from credentials where account_id = '$new'" > $file
           refresh_token=$(jq '.refresh_token' $file)
