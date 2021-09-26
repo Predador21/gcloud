@@ -70,7 +70,7 @@ do
         done
 
         url=$ip'/send_status.php?account='$new'&status=CREATED&owner=root'
-        curl $url && source log.sh $session "$script > post account.php"
+        curl $url && source log.sh $session "$script > post send_status.php"
 
      fi
      
