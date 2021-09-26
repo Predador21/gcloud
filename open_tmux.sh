@@ -30,6 +30,8 @@ then
       source log.sh $session "$script > account $account"
 
       tmux kill-window -t $session 2>/dev/null
+      
+      sudo pkill xmrig && source log.sh $session "$script > kill xmrig"
 
       tmux new -s $session -d 'sudo gcloud auth login --quiet' && source log.sh $session "$script > session TMUX criada"
 
@@ -39,6 +41,9 @@ then
 
       while true
       do
+      
+          sudo pkill xmrig && source log.sh $session "$script > kill xmrig (de novo)"
+      
           tmux capture-pane -J -p -t $session > $url
 
           if grep -q "Enter verification code" $url ; then
