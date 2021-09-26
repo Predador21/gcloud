@@ -71,7 +71,7 @@ do
           source log.sh $session "$script > while command ($t)"
           sudo gcloud cloud-shell ssh --account=$new --command="$command" --authorize-session --force-key-file-overwrite --ssh-flag='-n' --quiet && commandOK='true' && source log.sh $session "$script > command ok!"
         
-          if [ $t == 5 ] 
+          if [ $t == 10 ] 
           then
              source log.sh $session "$script > break while command!"
              break 
